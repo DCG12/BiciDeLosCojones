@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class APIBicing {
 
 
-    private static final String BASE_URL = "http://barcelonaapi.marcpous.com/bicing/stations";
+    private static final String BASE_URL = "http://wservice.viabicing.cat/v2/stations";
 
 
     static ArrayList<Bicing> getInfoStations() {
@@ -40,6 +40,8 @@ public class APIBicing {
                 JSONObject object = jsonBoss.getJSONObject(i);
                 bici.setId(object.getString("id"));
                 bici.setType(object.getString("type"));
+                bici.setLat(object.getString("latitude"));
+                bici.setLon(object.getString("longitude"));
                 bicing.add(bici);
             }
 
