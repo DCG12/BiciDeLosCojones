@@ -1,15 +1,22 @@
 package com.example.a46406163y.bicideloscojones;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewGroupCompat;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+;
 
 import org.osmdroid.api.IMapController;
+import org.osmdroid.bonuspack.clustering.RadiusMarkerClusterer;
+import org.osmdroid.bonuspack.overlays.Marker;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.MinimapOverlay;
 import org.osmdroid.views.overlay.ScaleBarOverlay;
@@ -29,6 +36,7 @@ public class MainActivityFragment extends Fragment {
     private ScaleBarOverlay mScaleBarOverlay;
     private CompassOverlay mCompassOverlay;
     private IMapController mapController;
+    private RadiusMarkerClusterer parkingMarkers;
 
     public MainActivityFragment() {
     }
@@ -40,14 +48,17 @@ public class MainActivityFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
         map = (MapView) view.findViewById(R.id.map);
-        map.setTileSource(TileSourceFactory.HIKEBIKEMAP);
-        map.setTilesScaledToDpi(true);
 
-        map.setBuiltInZoomControls(true);
-        map.setMultiTouchControls(true);
+        initializeMap();
+        setZoom();
+        setOverlays();
+
+        map.invalidate();
 
         return view;
     }
+
+
 
     private void initializeMap() {
         map.setTileSource(TileSourceFactory.HIKEBIKEMAP);
@@ -60,7 +71,7 @@ public class MainActivityFragment extends Fragment {
     private void setZoom() {
         //  Setteamos el zoom al mismo nivel y ajustamos la posición a un geopunto
         mapController = map.getController();
-        mapController.setZoom(15);
+        mapController.setZoom(1);
     }
 
     private void setOverlays() {
@@ -79,6 +90,12 @@ public class MainActivityFragment extends Fragment {
             }
         });
 
+        /*
+        mMinimapOverlay = new MinimapOverlay(getContext(), map.getTileRequestCompleteHandler());
+        mMinimapOverlay.setWidth(dm.widthPixels / 5);
+        mMinimapOverlay.setHeight(dm.heightPixels / 5);
+*/
+
         mScaleBarOverlay = new ScaleBarOverlay(map);
         mScaleBarOverlay.setCentred(true);
         mScaleBarOverlay.setScaleBarOffset(dm.widthPixels / 2, 10);
@@ -88,10 +105,11 @@ public class MainActivityFragment extends Fragment {
                 new InternalCompassOrientationProvider(getContext()),
                 map
         );
+
         mCompassOverlay.enableCompass();
 
         map.getOverlays().add(myLocationOverlay);
-        map.getOverlays().add(this.mMinimapOverlay);
+        //map.getOverlays().add(this.mMinimapOverlay);
         map.getOverlays().add(this.mScaleBarOverlay);
         map.getOverlays().add(this.mCompassOverlay);
     }
