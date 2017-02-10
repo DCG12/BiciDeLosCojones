@@ -40,7 +40,7 @@ public class MainActivityFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
         map = (MapView) view.findViewById(R.id.map);
-        map.setTileSource(TileSourceFactory.MAPQUESTOSM);
+        map.setTileSource(TileSourceFactory.HIKEBIKEMAP);
         map.setTilesScaledToDpi(true);
 
         map.setBuiltInZoomControls(true);
@@ -50,7 +50,7 @@ public class MainActivityFragment extends Fragment {
     }
 
     private void initializeMap() {
-        map.setTileSource(TileSourceFactory.MAPQUESTOSM);
+        map.setTileSource(TileSourceFactory.HIKEBIKEMAP);
         map.setTilesScaledToDpi(true);
 
         map.setBuiltInZoomControls(true);
