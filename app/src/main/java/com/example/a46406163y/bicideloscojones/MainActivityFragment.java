@@ -3,20 +3,18 @@ package com.example.a46406163y.bicideloscojones;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import android.util.*;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.bonuspack.clustering.RadiusMarkerClusterer;
-import org.osmdroid.bonuspack.overlays.Marker;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
-import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.MinimapOverlay;
 import org.osmdroid.views.overlay.ScaleBarOverlay;
@@ -24,6 +22,11 @@ import org.osmdroid.views.overlay.compass.CompassOverlay;
 import org.osmdroid.views.overlay.compass.InternalCompassOrientationProvider;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
+
+
+import java.util.ArrayList;
+
+;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -52,13 +55,29 @@ public class MainActivityFragment extends Fragment {
         initializeMap();
         setZoom();
         setOverlays();
-
+        putMarkers();
         map.invalidate();
 
         return view;
     }
 
+    private void putMarkers() {
 
+        setupMarkerOverlay();
+
+    }
+
+
+    private void setupMarkerOverlay() {
+        parkingMarkers = new RadiusMarkerClusterer(getContext());
+        map.getOverlays().add(parkingMarkers);
+
+        Drawable clusterIconD = getResources().getDrawable(R.drawable.marker_cluster);
+        Bitmap clusterIcon = ((BitmapDrawable)clusterIconD).getBitmap();
+
+        parkingMarkers.setIcon(clusterIcon);
+        parkingMarkers.setRadius(100);
+    }
 
     private void initializeMap() {
         map.setTileSource(TileSourceFactory.HIKEBIKEMAP);
@@ -109,9 +128,36 @@ public class MainActivityFragment extends Fragment {
         mCompassOverlay.enableCompass();
 
         map.getOverlays().add(myLocationOverlay);
-        //map.getOverlays().add(this.mMinimapOverlay);
+        map.getOverlays().add(this.mMinimapOverlay);
         map.getOverlays().add(this.mScaleBarOverlay);
         map.getOverlays().add(this.mCompassOverlay);
     }
 
+    @Override
+    public void onStart(){
+        RefreshDataTask task = new RefreshDataTask();
+        task.execute();
+    }
+
+    private class RefreshDataTask extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            APIBicing api = new APIBicing();
+            ArrayList<Bicing> bicings = api.getInfoStations();
+
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+
+        }
 }
