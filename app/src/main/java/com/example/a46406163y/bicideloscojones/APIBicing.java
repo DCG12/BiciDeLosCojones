@@ -38,10 +38,11 @@ public class APIBicing {
             for (int i = 0; i < jsonBoss.length(); i++) {
                 Bicing bici = new Bicing();
                 JSONObject object = jsonBoss.getJSONObject(i);
-                bici.setId(object.getString("id"));
+                bici.setId(object.getInt("id"));
                 bici.setType(object.getString("type"));
-                bici.setLat(object.getString("latitude"));
-                bici.setLon(object.getString("longitude"));
+                bici.setLat(object.getDouble("latitude"));
+                bici.setLon(object.getDouble("longitude"));
+                bici.setStName(object.getString("streetName"));
                 bicing.add(bici);
             }
 

@@ -5,21 +5,13 @@ package com.example.a46406163y.bicideloscojones;
  */
 public class Bicing {
 
-    private String id;
+    private int id;
     private String type;
-    private String lat;
-    private String lon;
+    private double lat;
+    private double lon;
     private String StName;
-    private String Nbike;
+    private int Nbike;
     private String nearbyStations;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getType() {
         return type;
@@ -29,19 +21,27 @@ public class Bicing {
         this.type = type;
     }
 
-    public String getLat() {
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public double getLat() {
         return lat;
     }
 
-    public void setLat(String lat) {
+    public void setLat(double lat) {
         this.lat = lat;
     }
 
-    public String getLon() {
+    public double getLon() {
         return lon;
     }
 
-    public void setLon(String lon) {
+    public void setLon(double lon) {
         this.lon = lon;
     }
 
@@ -53,11 +53,11 @@ public class Bicing {
         StName = stName;
     }
 
-    public String getNbike() {
+    public int getNbike() {
         return Nbike;
     }
 
-    public void setNbike(String nbike) {
+    public void setNbike(int nbike) {
         Nbike = nbike;
     }
 

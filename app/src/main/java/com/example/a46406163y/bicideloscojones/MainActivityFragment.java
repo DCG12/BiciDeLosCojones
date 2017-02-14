@@ -1,29 +1,41 @@
 package com.example.a46406163y.bicideloscojones;
 
+import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.*;
+import android.util.Log;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.osmdroid.api.IMapController;
-import org.osmdroid.bonuspack.clustering.RadiusMarkerClusterer;
+
+import org.osmdroid.events.MapEvent;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.api.IMapController;
+import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.ItemizedIconOverlay;
+import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
 import org.osmdroid.views.overlay.MinimapOverlay;
+import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.ScaleBarOverlay;
 import org.osmdroid.views.overlay.compass.CompassOverlay;
 import org.osmdroid.views.overlay.compass.InternalCompassOrientationProvider;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
-
-
+import org.osmdroid.bonuspack.clustering.RadiusMarkerClusterer;
+import org.osmdroid.bonuspack.overlays.Marker;
 import java.util.ArrayList;
 
 ;
@@ -40,6 +52,7 @@ public class MainActivityFragment extends Fragment {
     private CompassOverlay mCompassOverlay;
     private IMapController mapController;
     private RadiusMarkerClusterer parkingMarkers;
+    private ArrayList<Bicing> bicing;
 
     public MainActivityFragment() {
     }
@@ -64,15 +77,36 @@ public class MainActivityFragment extends Fragment {
     private void putMarkers() {
 
         setupMarkerOverlay();
+        if (bicing != null) {
+            for (Bicing bici : bicing) {
+                Marker marker = new Marker(map);
 
+                GeoPoint point = new GeoPoint(
+                        bici.getLat(),
+                        bici.getLon()
+                );
+
+                marker.setPosition(point);
+
+                marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+
+                marker.setIcon(getResources().getDrawable(R.drawable.index));
+                marker.setTitle(bici.getStName());
+                marker.setAlpha(0.6f);
+
+                parkingMarkers.add(marker);
+                parkingMarkers.invalidate();
+                map.invalidate();
+
+            }
+        }
     }
-
 
     private void setupMarkerOverlay() {
         parkingMarkers = new RadiusMarkerClusterer(getContext());
         map.getOverlays().add(parkingMarkers);
 
-        Drawable clusterIconD = getResources().getDrawable(R.drawable.marker_cluster);
+        Drawable clusterIconD = getResources().getDrawable(R.drawable.markerone);
         Bitmap clusterIcon = ((BitmapDrawable)clusterIconD).getBitmap();
 
         parkingMarkers.setIcon(clusterIcon);
@@ -135,6 +169,7 @@ public class MainActivityFragment extends Fragment {
 
     @Override
     public void onStart(){
+        super.onStart();
         RefreshDataTask task = new RefreshDataTask();
         task.execute();
     }
