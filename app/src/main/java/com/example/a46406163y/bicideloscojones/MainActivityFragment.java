@@ -162,7 +162,7 @@ public class MainActivityFragment extends Fragment {
         mCompassOverlay.enableCompass();
 
         map.getOverlays().add(myLocationOverlay);
-        map.getOverlays().add(this.mMinimapOverlay);
+        //map.getOverlays().add(this.mMinimapOverlay);
         map.getOverlays().add(this.mScaleBarOverlay);
         map.getOverlays().add(this.mCompassOverlay);
     }
