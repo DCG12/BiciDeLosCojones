@@ -24,6 +24,7 @@ import org.osmdroid.events.MapEvent;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
@@ -89,7 +90,6 @@ public class MainActivityFragment extends Fragment {
                 marker.setPosition(point);
 
                 marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-
                 marker.setIcon(getResources().getDrawable(R.drawable.index));
                 marker.setTitle(bici.getStName());
                 marker.setAlpha(0.6f);
@@ -125,6 +125,7 @@ public class MainActivityFragment extends Fragment {
         //  Setteamos el zoom al mismo nivel y ajustamos la posición a un geopunto
         mapController = map.getController();
         mapController.setZoom(1);
+
     }
 
     private void setOverlays() {
