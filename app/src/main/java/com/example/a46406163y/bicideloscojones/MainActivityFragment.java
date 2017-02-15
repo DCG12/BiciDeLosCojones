@@ -45,7 +45,7 @@ import java.util.ArrayList;
  * A placeholder fragment containing a simple view.
  */
 public class MainActivityFragment extends Fragment {
-
+    private View view;
     private MapView map;
     private MyLocationNewOverlay myLocationOverlay;
     private MinimapOverlay mMinimapOverlay;
@@ -53,16 +53,24 @@ public class MainActivityFragment extends Fragment {
     private CompassOverlay mCompassOverlay;
     private IMapController mapController;
     private RadiusMarkerClusterer parkingMarkers;
-    private ArrayList<Bicing> bicing;
+    private ArrayList<Bicing> bicings;
+
+
 
     public MainActivityFragment() {
+    }
+
+    @Override//notificamos al activity quer le añadimos items al menu
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_main, container, false);
+        view = inflater.inflate(R.layout.fragment_main, container, false);
 
         map = (MapView) view.findViewById(R.id.map);
 
@@ -77,15 +85,19 @@ public class MainActivityFragment extends Fragment {
 
     private void putMarkers() {
 
+
         setupMarkerOverlay();
-        if (bicing != null) {
-            for (Bicing bici : bicing) {
+        if (bicings != null) {
+            Log.d("LOG", bicings.get(0).toString());
+            for (Bicing bici : bicings) {
                 Marker marker = new Marker(map);
 
                 GeoPoint point = new GeoPoint(
                         bici.getLat(),
                         bici.getLon()
                 );
+
+                Log.d("DEBUG", bici.getStName());
 
                 marker.setPosition(point);
 
@@ -114,7 +126,7 @@ public class MainActivityFragment extends Fragment {
     }
 
     private void initializeMap() {
-        map.setTileSource(TileSourceFactory.HIKEBIKEMAP);
+        map.setTileSource(TileSourceFactory.DEFAULT_TILE_SOURCE);
         map.setTilesScaledToDpi(true);
 
         map.setBuiltInZoomControls(true);
@@ -124,7 +136,7 @@ public class MainActivityFragment extends Fragment {
     private void setZoom() {
         //  Setteamos el zoom al mismo nivel y ajustamos la posición a un geopunto
         mapController = map.getController();
-        mapController.setZoom(1);
+        mapController.setZoom(14);
 
     }
 
@@ -173,6 +185,27 @@ public class MainActivityFragment extends Fragment {
         super.onStart();
         RefreshDataTask task = new RefreshDataTask();
         task.execute();
+        //Log.d("LOG", datosEstaciones.get(0).toString());
+    }
+
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_main, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        if (id == R.id.action_refresh) {
+            RefreshDataTask task = new RefreshDataTask();
+            task.execute();
+
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private class RefreshDataTask extends AsyncTask<Void, Void, Void> {
@@ -180,7 +213,7 @@ public class MainActivityFragment extends Fragment {
         protected Void doInBackground(Void... voids) {
 
             APIBicing api = new APIBicing();
-            ArrayList<Bicing> bicings = api.getInfoStations();
+            bicings = api.getInfoStations();
 
             return null;
         }
@@ -193,6 +226,7 @@ public class MainActivityFragment extends Fragment {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            putMarkers();
         }
 
         }

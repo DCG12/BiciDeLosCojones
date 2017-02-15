@@ -68,4 +68,17 @@ public class Bicing {
     public void setNearbyStations(String nearbyStations) {
         this.nearbyStations = nearbyStations;
     }
+
+    @Override
+    public String toString() {
+        return "Bicing{" +
+                "id=" + id +
+                ", type='" + type + '\'' +
+                ", lat=" + lat +
+                ", lon=" + lon +
+                ", StName='" + StName + '\'' +
+                ", Nbike=" + Nbike +
+                ", nearbyStations='" + nearbyStations + '\'' +
+                '}';
+    }
 }

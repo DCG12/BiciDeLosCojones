@@ -2,6 +2,7 @@ package com.example.a46406163y.bicideloscojones;
 
 import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,7 +34,7 @@ public class APIBicing {
             ArrayList<Bicing> bicing = new ArrayList<>();
 
             JSONObject data = new JSONObject(JsonResponse);
-            JSONArray jsonBoss = data.getJSONArray("bici");
+            JSONArray jsonBoss = data.getJSONArray("stations");
 
             for (int i = 0; i < jsonBoss.length(); i++) {
                 Bicing bici = new Bicing();
@@ -43,6 +44,7 @@ public class APIBicing {
                 bici.setLat(object.getDouble("latitude"));
                 bici.setLon(object.getDouble("longitude"));
                 bici.setStName(object.getString("streetName"));
+
                 bicing.add(bici);
             }
 
