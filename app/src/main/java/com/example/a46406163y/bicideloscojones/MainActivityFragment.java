@@ -102,8 +102,18 @@ public class MainActivityFragment extends Fragment {
                 marker.setPosition(point);
 
                 marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-                marker.setIcon(getResources().getDrawable(R.drawable.index));
+
+                String tipobici = bici.getType();
+
+                if(tipobici.equals("BIKE")){
+                    marker.setIcon(getResources().getDrawable(R.drawable.bike4));
+                }
+               else{
+                    marker.setIcon(getResources().getDrawable(R.drawable.bike8));
+                }
                 marker.setTitle(bici.getStName());
+                marker.setSnippet(String.valueOf("Bicicletas disponibles. "  + bici.getNbike()) +"  Ranuras disponibles: " + String.valueOf(bici.getRanuras()));
+
                 marker.setAlpha(0.6f);
 
                 parkingMarkers.add(marker);
@@ -118,7 +128,7 @@ public class MainActivityFragment extends Fragment {
         parkingMarkers = new RadiusMarkerClusterer(getContext());
         map.getOverlays().add(parkingMarkers);
 
-        Drawable clusterIconD = getResources().getDrawable(R.drawable.markerone);
+        Drawable clusterIconD = getResources().getDrawable(R.drawable.index);
         Bitmap clusterIcon = ((BitmapDrawable)clusterIconD).getBitmap();
 
         parkingMarkers.setIcon(clusterIcon);

@@ -44,6 +44,8 @@ public class APIBicing {
                 bici.setLat(object.getDouble("latitude"));
                 bici.setLon(object.getDouble("longitude"));
                 bici.setStName(object.getString("streetName"));
+                bici.setRanuras(object.getInt("slots"));
+                bici.setNbike(object.getInt("bikes"));
 
                 bicing.add(bici);
             }

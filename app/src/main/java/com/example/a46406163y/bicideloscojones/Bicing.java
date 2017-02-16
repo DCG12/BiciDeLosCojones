@@ -12,6 +12,8 @@ public class Bicing {
     private String StName;
     private int Nbike;
     private String nearbyStations;
+    private int ranuras;
+
 
     public String getType() {
         return type;
@@ -29,20 +31,20 @@ public class Bicing {
         this.id = id;
     }
 
-    public double getLat() {
-        return lat;
-    }
-
-    public void setLat(double lat) {
-        this.lat = lat;
-    }
-
     public double getLon() {
         return lon;
     }
 
     public void setLon(double lon) {
         this.lon = lon;
+    }
+
+    public double getLat() {
+        return lat;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
     }
 
     public String getStName() {
@@ -69,6 +71,14 @@ public class Bicing {
         this.nearbyStations = nearbyStations;
     }
 
+    public int getRanuras() {
+        return ranuras;
+    }
+
+    public void setRanuras(int ranuras) {
+        this.ranuras = ranuras;
+    }
+
     @Override
     public String toString() {
         return "Bicing{" +
@@ -79,6 +89,7 @@ public class Bicing {
                 ", StName='" + StName + '\'' +
                 ", Nbike=" + Nbike +
                 ", nearbyStations='" + nearbyStations + '\'' +
+                ", ranuras=" + ranuras +
                 '}';
     }
 }
