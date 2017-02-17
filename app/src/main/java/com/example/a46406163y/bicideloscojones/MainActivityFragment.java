@@ -41,9 +41,7 @@ import java.util.ArrayList;
 
 ;
 
-/**
- * A placeholder fragment containing a simple view.
- */
+
 public class MainActivityFragment extends Fragment {
     private View view;
     private MapView map;
@@ -60,7 +58,7 @@ public class MainActivityFragment extends Fragment {
     public MainActivityFragment() {
     }
 
-    @Override//notificamos al activity quer le añadimos items al menu
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
@@ -69,7 +67,7 @@ public class MainActivityFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         view = inflater.inflate(R.layout.fragment_main, container, false);
 
         map = (MapView) view.findViewById(R.id.map);
@@ -88,7 +86,6 @@ public class MainActivityFragment extends Fragment {
 
         setupMarkerOverlay();
         if (bicings != null) {
-            Log.d("LOG", bicings.get(0).toString());
             for (Bicing bici : bicings) {
                 Marker marker = new Marker(map);
 
@@ -97,19 +94,53 @@ public class MainActivityFragment extends Fragment {
                         bici.getLon()
                 );
 
-                Log.d("DEBUG", bici.getStName());
-
                 marker.setPosition(point);
 
                 marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
 
                 String tipobici = bici.getType();
 
+                int Nbicis, Nranuras, Totalbicis, PorcentajeBicis;
+                Nbicis = bici.getNbike();
+                Nranuras = bici.getRanuras();
+                Totalbicis = Nbicis + Nranuras;
+                PorcentajeBicis = (Nbicis*100)/Totalbicis;
+
+
                 if(tipobici.equals("BIKE")){
-                    marker.setIcon(getResources().getDrawable(R.drawable.bike4));
+                    if(PorcentajeBicis==0){
+                        marker.setIcon(getResources().getDrawable(R.drawable.bike5));
+                    }
+                    if(PorcentajeBicis > 0 && PorcentajeBicis <=25){
+                        marker.setIcon(getResources().getDrawable(R.drawable.bike3));
+                    }
+                    if(PorcentajeBicis > 25 && PorcentajeBicis <=50){
+                        marker.setIcon(getResources().getDrawable(R.drawable.bike6));
+                    }
+                    if(PorcentajeBicis > 50 && PorcentajeBicis <=75){
+                        marker.setIcon(getResources().getDrawable(R.drawable.bike2));
+                    }
+                    if(PorcentajeBicis > 50 && PorcentajeBicis <=75){
+                        marker.setIcon(getResources().getDrawable(R.drawable.bike4));
+                    }
                 }
                else{
-                    marker.setIcon(getResources().getDrawable(R.drawable.bike8));
+                    if(PorcentajeBicis==0){
+                        marker.setIcon(getResources().getDrawable(R.drawable.bike1));
+                    }
+                    if(PorcentajeBicis > 0 && PorcentajeBicis <=25){
+                        marker.setIcon(getResources().getDrawable(R.drawable.markerone));
+                    }
+                    if(PorcentajeBicis > 25 && PorcentajeBicis <=50){
+                        marker.setIcon(getResources().getDrawable(R.drawable.bike9));
+                    }
+                    if(PorcentajeBicis > 50 && PorcentajeBicis <=75){
+                        marker.setIcon(getResources().getDrawable(R.drawable.bike7));
+                    }
+                    if(PorcentajeBicis > 50 && PorcentajeBicis <=75){
+                        marker.setIcon(getResources().getDrawable(R.drawable.bike8));
+                    }
+
                 }
                 marker.setTitle(bici.getStName());
                 marker.setSnippet(String.valueOf("Bicicletas disponibles. "  + bici.getNbike()) +"  Ranuras disponibles: " + String.valueOf(bici.getRanuras()));
@@ -144,7 +175,7 @@ public class MainActivityFragment extends Fragment {
     }
 
     private void setZoom() {
-        //  Setteamos el zoom al mismo nivel y ajustamos la posición a un geopunto
+
         mapController = map.getController();
         mapController.setZoom(14);
 
@@ -166,12 +197,6 @@ public class MainActivityFragment extends Fragment {
             }
         });
 
-        /*
-        mMinimapOverlay = new MinimapOverlay(getContext(), map.getTileRequestCompleteHandler());
-        mMinimapOverlay.setWidth(dm.widthPixels / 5);
-        mMinimapOverlay.setHeight(dm.heightPixels / 5);
-*/
-
         mScaleBarOverlay = new ScaleBarOverlay(map);
         mScaleBarOverlay.setCentred(true);
         mScaleBarOverlay.setScaleBarOffset(dm.widthPixels / 2, 10);
@@ -185,7 +210,6 @@ public class MainActivityFragment extends Fragment {
         mCompassOverlay.enableCompass();
 
         map.getOverlays().add(myLocationOverlay);
-        //map.getOverlays().add(this.mMinimapOverlay);
         map.getOverlays().add(this.mScaleBarOverlay);
         map.getOverlays().add(this.mCompassOverlay);
     }
@@ -195,7 +219,7 @@ public class MainActivityFragment extends Fragment {
         super.onStart();
         RefreshDataTask task = new RefreshDataTask();
         task.execute();
-        //Log.d("LOG", datosEstaciones.get(0).toString());
+
     }
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
